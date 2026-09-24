@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitBuddy | Admin Dashboard</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="/">FitBuddy<span>AI</span></a>
+  <a class="nav-link" href="/">Home</a>
+</header>
+
+<main class="page">
+  <section class="page-heading">
+    <p class="eyebrow">ADMIN / COACH VIEW</p>
+    <h1>All Users & Plans</h1>
+    <p class="muted">Review stored user information and original/updated plans.</p>
+  </section>
+
+  {% if not rows %}
+    <section class="card empty">No users have been registered yet.</section>
+  {% endif %}
+
+  {% for row in rows %}
+  <section class="card admin-card">
+    <div class="admin-header">
+      <div>
+        <h2>{{ row.user.username }}</h2>
+        <p class="muted">{{ row.user.user_id }} · {{ row.user.goal }} · {{ row.user.intensity }}</p>
+      </div>
+      <form action="/delete-user/{{ row.user.user_id }}" method="post" onsubmit="return confirm('Delete this user and their plans?')">
+        <button class="danger-btn" type="submit">Delete</button>
+      </form>
+    </div>
+
+    <div class="profile-grid compact">
+      <div><b>Age</b><span>{{ row.user.age }}</span></div>
+      <div><b>Weight</b><span>{{ row.user.weight }} kg</span></div>
+      <div><b>Experience</b><span>{{ row.user.experience }}</span></div>
+    </div>
+
+    {% if row.plan %}
+      <h3>Original Plan</h3>
+      <pre class="plan small-plan">{{ row.plan.original_plan }}</pre>
+      {% if row.plan.updated_plan %}
+        <h3>Updated Plan</h3>
+        <pre class="plan small-plan">{{ row.plan.updated_plan }}</pre>
+        <p><b>Last feedback:</b> {{ row.plan.last_feedback }}</p>
+      {% endif %}
+    {% endif %}
+  </section>
+  {% endfor %}
+</main>
+</body>
+</html>

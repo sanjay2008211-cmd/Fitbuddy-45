@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitBuddy | Your Plan</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="/">FitBuddy<span>AI</span></a>
+  <a class="nav-link" href="/">New Plan</a>
+</header>
+
+<main class="page">
+  <section class="card profile">
+    <div>
+      <p class="eyebrow">PERSONALIZED PLAN</p>
+      <h1>Hi, {{ user.username }} 👋</h1>
+      <p class="muted">Your plan is tailored to your goal, intensity and experience.</p>
+    </div>
+    <div class="profile-grid">
+      <div><b>User ID</b><span>{{ user.user_id }}</span></div>
+      <div><b>Age</b><span>{{ user.age }}</span></div>
+      <div><b>Weight</b><span>{{ user.weight }} kg</span></div>
+      <div><b>Goal</b><span>{{ user.goal }}</span></div>
+      <div><b>Intensity</b><span>{{ user.intensity }}</span></div>
+      <div><b>Experience</b><span>{{ user.experience }}</span></div>
+    </div>
+  </section>
+
+  {% if message %}
+  <div class="alert success">{{ message }}</div>
+  {% endif %}
+
+  <section class="card">
+    <div class="section-title"><span class="icon">🏋️</span><div><p class="eyebrow">WORKOUT</p><h2>{{ "Updated 7-Day Plan" if updated else "Your 7-Day Plan" }}</h2></div></div>
+    <pre class="plan">{{ workout_plan }}</pre>
+  </section>
+
+  <section class="card tip">
+    <div class="section-title"><span class="icon">🥗</span><div><p class="eyebrow">NUTRITION & RECOVERY</p><h2>Your Tip</h2></div></div>
+    <p>{{ nutrition_tip }}</p>
+  </section>
+
+  <section class="card feedback">
+    <div class="section-title"><span class="icon">🔄</span><div><p class="eyebrow">AI FEEDBACK LOOP</p><h2>Refine your plan</h2></div></div>
+    <p class="muted">Tell FitBuddy what you want changed, such as “more cardio” or “include another rest day.”</p>
+    <form action="/submit-feedback" method="post">
+      <input type="hidden" name="user_id" value="{{ user.user_id }}">
+      <textarea name="feedback" rows="5" maxlength="2000" placeholder="Describe the changes you want..." required></textarea>
+      <button class="primary-btn" type="submit">Update Plan with AI →</button>
+    </form>
+  </section>
+</main>
+</body>
+</html>
